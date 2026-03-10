@@ -38,14 +38,28 @@ class BaseGUI(wx.Frame):
         self.SetSizerAndFit(frame_sizer)
         self.Centre()
 
-    def _AddText(self, text : str, pos : tuple[int, int] | None = None, span : tuple[int, int] = (1, 1)):
+    def _AddText(self, text : str, pos : tuple[int, int] | None = None, span : tuple[int, int] = (1, 1), underline : bool = False, bold : bool = False) -> wx.StaticText:
         pos = self.__ResolvePosition(pos, span)
+        
+        static_text = wx.StaticText(self.panel, label=text)
+        
+        if underline:
+            font = static_text.GetFont()
+            font.MakeUnderlined()
+            static_text.SetFont(font)
+        
+        if bold:
+            font = static_text.GetFont()
+            font.MakeBold()
+            static_text.SetFont(font)
+        
         self.grid.Add(
-            wx.StaticText(self.panel, label=text),
+            static_text,
             pos=(pos[0], pos[1]),
             span=(span[0], span[1]),
             flag=wx.ALIGN_CENTER
         )
+        return static_text
         
     def _AddTextbox(self, pos : tuple[int, int] | None = None, span : tuple[int, int] = (1, 1)):
         pos = self.__ResolvePosition(pos, span)
@@ -59,11 +73,12 @@ class BaseGUI(wx.Frame):
     def _AddButton(self, text : str, pos : tuple[int, int] | None = None, span : tuple[int, int] = (1, 1), event : callable = None) -> wx.Button:
         pos = self.__ResolvePosition(pos, span)
         button = wx.Button(self.panel, label=text)
+        button.SetMinSize((200, 35))
         self.grid.Add(
                 button,
                 pos=(pos[0], pos[1]),
                 span=(span[0], span[1]),
-                flag=wx.ALIGN_CENTER
+                flag=wx.ALIGN_CENTER | wx.EXPAND
         )
         if event:
             button.Bind(wx.EVT_BUTTON, event)
@@ -89,6 +104,11 @@ class DashboardGUI(BaseGUI):
         
         self._StartGridBuild()
         
+        self._AddText("Statistics", underline=True)
+        
+        self._AddDivider()
+        
+        self._AddText("Management", underline=True)
         
         self._AddButton("Membership Management")
         self._AddButton("Parking Management")
