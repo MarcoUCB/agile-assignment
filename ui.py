@@ -61,14 +61,16 @@ class BaseGUI(wx.Frame):
         )
         return static_text
         
-    def _AddTextbox(self, pos : tuple[int, int] | None = None, span : tuple[int, int] = (1, 1)):
+    def _AddTextbox(self, pos : tuple[int, int] | None = None, span : tuple[int, int] = (1, 1)) -> wx.TextCtrl:
+        textbox = wx.TextCtrl(self.panel, style=wx.TE_PROCESS_ENTER)
         pos = self.__ResolvePosition(pos, span)
         self.grid.Add(
-            wx.TextCtrl(self.panel, style=wx.TE_PROCESS_ENTER), 
+            textbox, 
             pos=(pos[0], pos[1]),
             span=(span[0], span[1]),
             flag=wx.ALIGN_CENTER
         ) 
+        return textbox
     
     def _AddButton(self, text : str, pos : tuple[int, int] | None = None, span : tuple[int, int] = (1, 1), event : callable = None) -> wx.Button:
         pos = self.__ResolvePosition(pos, span)
@@ -127,11 +129,11 @@ class WelcomeGUI(BaseGUI):
         
         self._AddText("Welcome to GymPro", span=(1, 2))
         
-        self._AddText("Login: ")
-        self._AddTextbox((1, 1))
+        self._AddText("Email: ")
+        self.email_field = self._AddTextbox((1, 1))
         
         self._AddText("Password: ")
-        self._AddTextbox((2, 1))
+        self.password_field = self._AddTextbox((2, 1))
         
         widget_login_button = self._AddButton("Login / Register", span=(1, 2), event=self._onLoginButtonPress)
 
@@ -140,9 +142,14 @@ class WelcomeGUI(BaseGUI):
     def _onLoginButtonPress(self, event):
         # Jamie: Implement user login / register here
         
+        user_id = 0
+        email = self.email_field.GetValue()
+        password = self.password_field.GetValue()
+        
+        
         # Once the user is logged in / registered, run this code.
         # in DashboardGUI() pass in the user ID returned by the database.
-        self.next_gui = DashboardGUI(0)
+        self.next_gui = DashboardGUI(user_id)
         self.next_gui.Show()
         self.Destroy()
         
