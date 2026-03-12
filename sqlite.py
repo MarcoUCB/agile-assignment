@@ -21,4 +21,5 @@ class GymProDB(SQLite):
     
     def CreateDatabaseSchema(self):
         # Jamie
+        # Make sure to check if the schema doesn't already exist. We don't wanna overwrite all of our data if the db has existing users.
         pass
