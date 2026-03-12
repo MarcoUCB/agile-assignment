@@ -125,15 +125,15 @@ class WelcomeGUI(BaseGUI):
         
         self._StartGridBuild()
         
-        self._AddText("Welcome to GymPro", (0, 0), (1, 2))
+        self._AddText("Welcome to GymPro", span=(1, 2))
         
-        self._AddText("Login: ", (1, 0))
+        self._AddText("Login: ")
         self._AddTextbox((1, 1))
         
-        self._AddText("Password: ", (2, 0))
+        self._AddText("Password: ")
         self._AddTextbox((2, 1))
         
-        widget_login_button = self._AddButton("Login / Register", (3, 0), (1, 2), event=self._onLoginButtonPress)
+        widget_login_button = self._AddButton("Login / Register", span=(1, 2), event=self._onLoginButtonPress)
 
         self._EndGridBuild()
     
