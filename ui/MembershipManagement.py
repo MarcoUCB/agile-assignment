@@ -12,6 +12,7 @@ class MembershipManagementUI(BaseUI):
         self._AddButton("Upgrade to Plus", event=self.__e_PlusPressed)
         self._AddButton("Upgrade to Pro", event=self.__e_ProPressed)
         self._AddButton("Upgrade to Pro+", event=self.__e_PlusProPressed)
+        self._AddButton("Cancel Membership", event=self.__e_CancelPressed)
         
         self._EndGridBuild()
     
@@ -22,6 +23,7 @@ class MembershipManagementUI(BaseUI):
     def OpenCardGUI(self) -> bool:
         self.next_gui = CardInputUI(self.user_id)
         self.next_gui.Show()
+        return True
     
     def __e_PlusPressed(self, event):
         self.OpenCardGUI()
@@ -29,3 +31,6 @@ class MembershipManagementUI(BaseUI):
         self.OpenCardGUI()
     def __e_PlusProPressed(self, event):
         self.OpenCardGUI()
+    def __e_CancelPressed(self, event):
+        # Jamie: Fetch database and remove the membership. Along with Credit Card Information.
+        pass

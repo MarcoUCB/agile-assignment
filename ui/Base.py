@@ -1,4 +1,5 @@
 import wx
+import wx.adv
 
 class BaseUI(wx.Frame):
     def __init__(self, title):
@@ -93,3 +94,17 @@ class BaseUI(wx.Frame):
             flag=wx.EXPAND | wx.ALIGN_CENTER_VERTICAL
         )
         return line
+    
+    def _AddCalendar(self, pos : tuple[int, int] | None = None, span : tuple[int, int] = (1, 1), event : callable = None) -> wx.adv.CalendarCtrl:
+        pos = self.__ResolvePosition(pos, span)
+        calendar = wx.adv.CalendarCtrl(self.panel, 10, wx.DateTime.Now())
+        self.grid.Add(
+            calendar,
+            pos=(pos[0], pos[1]),
+            span=(span[0], span[1]),
+            flag=wx.ALIGN_CENTER | wx.EXPAND
+        )
+        if event:
+            calendar.Bind(wx.adv.EVT_CALENDAR, event)
+        return calendar
+        

@@ -1,6 +1,8 @@
 
 from ui.Base import BaseUI
+from ui.BookSession import BookSessionUI
 from ui.MembershipManagement import MembershipManagementUI
+from ui.ParkingManagement import ParkingManagement
 
 
 class UserDashboardUI(BaseUI):
@@ -17,12 +19,21 @@ class UserDashboardUI(BaseUI):
         self._AddText("Management", underline=True)
         
         self._AddButton("Membership Management", event=self.__e_MembershipManagementPressed)
-        self._AddButton("Parking Management")
-        self._AddButton("Book a Session")
-        self._AddButton("Delete Account ")
+        self._AddButton("Parking Management", event=self.__e_ParkingManagementPressed)
+        self._AddButton("Book a Session", event=self.__e_BookASessionPressed)
+        self._AddButton("Delete Account ", event=self.__e_DeleteAccountPressed)
         
         self._EndGridBuild()
     
     def __e_MembershipManagementPressed(self, event):
         self.next_gui = MembershipManagementUI(self.user_id)
         self.next_gui.Show()
+        
+    def __e_ParkingManagementPressed(self, event):
+        self.next_gui = ParkingManagement(self.user_id)
+        self.next_gui.Show()
+    def __e_BookASessionPressed(self, event):
+        self.next_gui = BookSessionUI(self.user_id)
+        self.next_gui.Show()
+    def __e_DeleteAccountPressed(self, event):
+        pass
