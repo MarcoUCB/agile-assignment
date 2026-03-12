@@ -1,10 +1,6 @@
 import wx
 
-# UNDERSCORE DEFINITIONS
-#     - _ = Protected
-#     - __ = Private
-
-class BaseGUI(wx.Frame):
+class BaseUI(wx.Frame):
     def __init__(self, title):
         super().__init__(parent=None,
                          title=title,
@@ -97,59 +93,3 @@ class BaseGUI(wx.Frame):
             flag=wx.EXPAND | wx.ALIGN_CENTER_VERTICAL
         )
         return line
-        
-
-class DashboardGUI(BaseGUI):
-    def __init__(self, user_id : int):
-        super().__init__("GymPro: Dashboard")
-        self.user_id = user_id
-        
-        self._StartGridBuild()
-        
-        self._AddText("Statistics", underline=True)
-        
-        self._AddDivider()
-        
-        self._AddText("Management", underline=True)
-        
-        self._AddButton("Membership Management")
-        self._AddButton("Parking Management")
-        self._AddButton("Book a Session")
-        self._AddButton("Delete Account ")
-        
-        self._EndGridBuild()
-
-# PARENT ROOT GUI
-class WelcomeGUI(BaseGUI):
-    def __init__(self):
-        # ^ is the Bitwise XOR operation. By XORing default frame style with resizing we remove resizing.
-        super().__init__("GymPro: Welcome")
-        
-        self._StartGridBuild()
-        
-        self._AddText("Welcome to GymPro", span=(1, 2))
-        
-        self._AddText("Email: ")
-        self.email_field = self._AddTextbox((1, 1))
-        
-        self._AddText("Password: ")
-        self.password_field = self._AddTextbox((2, 1))
-        
-        widget_login_button = self._AddButton("Login / Register", span=(1, 2), event=self._onLoginButtonPress)
-
-        self._EndGridBuild()
-    
-    def _onLoginButtonPress(self, event):
-        # Jamie: Implement user login / register here
-        
-        user_id = 0
-        email = self.email_field.GetValue()
-        password = self.password_field.GetValue()
-        
-        
-        # Once the user is logged in / registered, run this code.
-        # in DashboardGUI() pass in the user ID returned by the database.
-        self.next_gui = DashboardGUI(user_id)
-        self.next_gui.Show()
-        self.Destroy()
-        

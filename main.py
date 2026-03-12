@@ -1,6 +1,6 @@
 import argparse
 from sqlite import SQLite
-from ui import WelcomeGUI
+from ui.Welcome import WelcomeUI
 import wx
 
 db_conn = None
@@ -21,7 +21,7 @@ def run_cli():
 
 def run_gui():
     app = wx.App()
-    gui = WelcomeGUI()
+    gui = WelcomeUI()
     gui.Show(True)
     app.MainLoop()
 
