@@ -15,7 +15,7 @@ const attendanceData = [
 function Home() {
   return (
     <SidebarWrapper title="Home">
-      <div className="flex flex-row gap-6">
+      <div className="flex flex-row gap-6 login-card-enter">
         <Card className="w-1/2 shadow-lg">
           <CardHeader>
             <CardTitle>Your Attendance</CardTitle>
