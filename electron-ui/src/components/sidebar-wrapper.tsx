@@ -10,9 +10,10 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
+    useSidebar,
 } from './ui/sidebar';
 
-import { CalendarClockIcon, CarFrontIcon, HouseIcon, IdCardIcon, LogOutIcon, MoonIcon, Settings2Icon, ShieldCheckIcon, SunIcon } from 'lucide-react'
+import { CalendarClockIcon, CarFrontIcon, HouseIcon, IdCardIcon, LogOutIcon, MoonIcon, Settings2Icon, ShieldCheckIcon, SunIcon, MenuIcon } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 
@@ -35,6 +36,7 @@ export const SidebarWrapper: React.FC<SidebarWrapperProps> = ({
   children,
 }) => {
   const location = useLocation()
+  const { toggleSidebar, open } = useSidebar()
   const [isDark, setIsDark] = useState(false)
 
   useEffect(() => {
@@ -57,17 +59,28 @@ export const SidebarWrapper: React.FC<SidebarWrapperProps> = ({
 
   return (
         <div className="flex flex-row">
-          <Sidebar collapsible="none" className="border-r border-sidebar-border h-screen">
-            <SidebarHeader className="px-4 py-5">
-              <div className="flex items-center gap-3">
-                <div className="flex size-9 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <ShieldCheckIcon className="size-5" />
+          <Sidebar variant="floating" collapsible="icon" className="border-r border-sidebar-border h-screen">
+            <SidebarHeader className="px-4 py-5 flex items-center justify-between">
+              {open && (
+                <div className="flex items-center gap-3">
+                  <div className="flex size-9 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                    <ShieldCheckIcon className="size-5" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold tracking-tight">Agile Club</p>
+                    <p className="text-xs text-sidebar-foreground/70">Member Portal</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm font-semibold tracking-tight">Agile Club</p>
-                  <p className="text-xs text-sidebar-foreground/70">Member Portal</p>
-                </div>
-              </div>
+              )}
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={toggleSidebar}
+                className="shrink-0"
+                aria-label="Toggle sidebar"
+              >
+                <MenuIcon className="size-5" />
+              </Button>
             </SidebarHeader>
 
             <SidebarContent>
@@ -89,21 +102,23 @@ export const SidebarWrapper: React.FC<SidebarWrapperProps> = ({
             </SidebarContent>
 
             <SidebarFooter className="border-t border-sidebar-border p-4">
-              <div className="flex items-center gap-2">
-                <div className="flex-1 rounded-md bg-sidebar-accent/60 px-3 py-2">
-                  <p className="text-xs text-sidebar-foreground/70">Signed in as</p>
-                  <p className="text-sm font-medium">Alex Johnson</p>
+              {open && (
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 rounded-md bg-sidebar-accent/60 px-3 py-2">
+                    <p className="text-xs text-sidebar-foreground/70">Signed in as</p>
+                    <p className="text-sm font-medium">Alex Johnson</p>
+                  </div>
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+                    onClick={toggleTheme}
+                    className="shrink-0 hover:cursor-pointer"
+                  >
+                    {isDark ? <SunIcon /> : <MoonIcon />}
+                  </Button>
                 </div>
-                <Button
-                  size="icon"
-                  variant="outline"
-                  aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-                  onClick={toggleTheme}
-                  className="shrink-0 hover:cursor-pointer"
-                >
-                  {isDark ? <SunIcon /> : <MoonIcon />}
-                </Button>
-              </div>
+              )}
             </SidebarFooter>
           </Sidebar>
 
