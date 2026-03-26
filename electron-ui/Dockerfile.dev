@@ -6,9 +6,11 @@ COPY package.json pnpm-lock.yaml ./
 
 RUN npm install -g pnpm
 RUN pnpm install
+RUN pnpm install @base-ui-components/react
+RUN pnpm insta
 
 COPY . .
 
 EXPOSE 5173
 
-CMD ["pnpm", "run", "dev:web"]
+CMD ["pnpm", "exec", "vite", "--mode", "web", "--host", "0.0.0.0", "--port", "5173"]
