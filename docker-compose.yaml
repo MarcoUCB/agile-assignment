@@ -42,7 +42,7 @@ services:
       - postgres_data:/var/lib/postgresql
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: CoolPass321
       POSTGRES_DB: gym_pro
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
@@ -54,20 +54,21 @@ services:
       - gym-pro
   db-api:
     build:
-      context: db
+      context: db-api
       dockerfile: Dockerfile
     container_name: db-api
     ports:
       - "5431:5431"
     environment:
-      POSTGRES_USER: api
-      POSTGRES_PASSWORD: CoolPass321
-      POSTGRES_DB: gym_pro
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "api"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      FLASK_ENV: production
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: CoolPass321
+      DB_NAME: gym_pro
+    depends_on:
+      db:
+        condition: service_healthy
     restart: unless-stopped
     networks:
       - gym-pro
