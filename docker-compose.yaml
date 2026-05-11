@@ -52,6 +52,7 @@ services:
     restart: unless-stopped
     networks:
       - gym-pro
+
   db-api:
     build:
       context: db-api
@@ -69,6 +70,17 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - gym-pro
+  
+  account-mgmt:
+    build:
+      context: account-mgmt
+      dockerfile: Dockerfile
+    container_name: account-mgmt
+    ports:
+      - "5432:5432"
     restart: unless-stopped
     networks:
       - gym-pro
