@@ -17,7 +17,8 @@ def get_db_connection():
         password=os.getenv('DB_PASSWORD', 'CoolPass321')
     )
 
-@app.route('/api/db-api/db-healthcheck', methods=['GET'])
+
+@app.route('/api/db-healthcheck', methods=['GET'])
 def db_healthcheck():
     # Open postgres connection and check if it's alive
     try:
@@ -37,8 +38,6 @@ def get_user(user_id):
     
     # Jsonify the result and return it
     user = cur.fetchone()
-    cur.close()
-    conn.close()
     if user:
         return {
             'id': user[0],
