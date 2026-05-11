@@ -17,6 +17,7 @@ def get_db_connection():
         password=os.getenv('DB_PASSWORD', 'CoolPass321')
     )
 
+
 @app.route('/api/db-healthcheck', methods=['GET'])
 def db_healthcheck():
     # Open postgres connection and check if it's alive
@@ -32,19 +33,23 @@ def get_user(user_id):
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute('SELECT * FROM Users WHERE id = %s', (user_id,))
+
+@app.route('/api/get-license-plate/<int:user_id>', methods=['GET'])
+def get_licenseplate(user_id):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute('SELECT Parking."User ID" FROM Parking WHERE id = %s', (user_id))
     
     # Jsonify the result and return it
     user = cur.fetchone()
-    cur.close()
-    conn.close()
     if user:
-        return {
-            'id': user[0],
-            'name': user[1],
-            'email': user[2]
-        }, 200
+        cur.execute('SELECT * FROM Users WHERE id = %s', (user,))
+        return 
     else:
         return 'User not found', 404
+    
+    cur.close()
+    conn.close()
     pass
 
 if __name__ == '__main__':
